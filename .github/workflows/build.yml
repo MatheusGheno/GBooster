@@ -1,0 +1,62 @@
+name: Compilar e publicar
+
+on:
+  push:
+    tags: ["v*"]        # cria uma versão quando você marcar v0.1.0, v0.2.0...
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      # --locked-mode: falha se alguma dependência mudou em relação ao packages.lock.json
+      - name: Restaurar dependências (travadas)
+        run: dotnet restore --locked-mode
+
+      - name: Verificar dependências com falha conhecida
+        shell: pwsh
+        run: |
+          $out = dotnet list package --vulnerable --include-transitive 2>&1 | Out-String
+          Write-Host $out
+          if ($out -match "has the following vulnerable packages" -and $out -match ">") { throw "Dependência vulnerável encontrada." }
+
+      - name: Compilar
+        run: dotnet publish GBooster.csproj -c Release -r win-x64 --self-contained true --no-restore -o publicar
+
+      - name: Gerar hash SHA-256
+        shell: pwsh
+        run: |
+          $h = Get-FileHash publicar\GBooster.exe -Algorithm SHA256
+          "$($h.Hash)  GBooster.exe" | Out-File publicar\SHA256.txt -Encoding ascii
+          Write-Host $h.Hash
+
+      - name: Montar o zip da versão
+        shell: pwsh
+        run: |
+          Copy-Item README.md, SECURITY.md, THIRD-PARTY-NOTICES.md, LICENSE publicar\
+          Compress-Archive -Path publicar\* -DestinationPath GBooster-win-x64.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: GBooster-win-x64
+          path: |
+            GBooster-win-x64.zip
+            publicar/SHA256.txt
+
+      - name: Publicar versão no GitHub
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            GBooster-win-x64.zip
+            publicar/SHA256.txt
