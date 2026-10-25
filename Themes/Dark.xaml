@@ -1,0 +1,38 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <!-- Tema Dark. Espelha tokens.css (camada semântica). Mesmos nomes nos dois temas. -->
+  <SolidColorBrush x:Key="Brush.App" Color="#0c1018"/>
+  <SolidColorBrush x:Key="Brush.Titlebar" Color="#111621"/>
+  <SolidColorBrush x:Key="Brush.Window" Color="#161b27"/>
+  <SolidColorBrush x:Key="Brush.Panel" Color="#1c2230"/>
+  <SolidColorBrush x:Key="Brush.Field" Color="#232a3a"/>
+  <SolidColorBrush x:Key="Brush.Hover" Color="#2c3447"/>
+  <SolidColorBrush x:Key="Brush.AccentTint" Color="#1f1006"/>
+  <SolidColorBrush x:Key="Brush.BorderSubtle" Color="#2c3447"/>
+  <SolidColorBrush x:Key="Brush.BorderDefault" Color="#434d66"/>
+  <SolidColorBrush x:Key="Brush.BorderStrong" Color="#8792ab"/>
+  <SolidColorBrush x:Key="Brush.BorderAccent" Color="#6e3208"/>
+  <SolidColorBrush x:Key="Brush.BorderFocus" Color="#ff9440"/>
+  <SolidColorBrush x:Key="Brush.TextPrimary" Color="#e8ecf5"/>
+  <SolidColorBrush x:Key="Brush.TextSecondary" Color="#aab3c7"/>
+  <SolidColorBrush x:Key="Brush.TextTertiary" Color="#8792ab"/>
+  <SolidColorBrush x:Key="Brush.TextOnAccent" Color="#080b12"/>
+  <SolidColorBrush x:Key="Brush.TextAccent" Color="#ff9440"/>
+  <SolidColorBrush x:Key="Brush.Warn" Color="#f2c14e"/>
+  <SolidColorBrush x:Key="Brush.WarnBg" Color="#1Af2c14e"/>
+  <SolidColorBrush x:Key="Brush.WarnBorder" Color="#4Df2c14e"/>
+  <SolidColorBrush x:Key="Brush.Accent" Color="#ff7a14"/>
+  <SolidColorBrush x:Key="Brush.AccentHover" Color="#ff9440"/>
+  <SolidColorBrush x:Key="Brush.AccentPressed" Color="#d95f0c"/>
+  <SolidColorBrush x:Key="Brush.LogoAccent" Color="#ff7a14"/>
+  <SolidColorBrush x:Key="Brush.StateActive" Color="#3ddc97"/>
+  <SolidColorBrush x:Key="Brush.StateIdle" Color="#5a6580"/>
+  <SolidColorBrush x:Key="Brush.FieldBorder" Color="#434d66"/>
+  <SolidColorBrush x:Key="Brush.RangeTrack" Color="#2c3447"/>
+  <SolidColorBrush x:Key="Brush.BtnSecondary" Color="#2c3447"/>
+  <SolidColorBrush x:Key="Brush.BtnSecondaryHover" Color="#384159"/>
+  <SolidColorBrush x:Key="Brush.Thumb" Color="#f5f7fb"/>
+  <SolidColorBrush x:Key="Brush.WindowBorder" Color="#384159"/>
+  <SolidColorBrush x:Key="Brush.NavHover" Color="#0DFFFFFF"/>
+  <SolidColorBrush x:Key="Brush.NavActive" Color="#17FFFFFF"/>
+</ResourceDictionary>
