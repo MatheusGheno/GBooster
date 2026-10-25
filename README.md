@@ -1,5 +1,7 @@
 # GBooster
 
+<p align="center"><img src="docs/github-banner-animado.gif" alt="GBooster" width="760"></p>
+
 **🇧🇷 Português** · [🇺🇸 English](#english)
 
 > Projeto pessoal, gratuito e de código aberto (licença MIT). Versão **0.1**: primeira versão pública, ainda em testes.
@@ -25,6 +27,16 @@ toda vez que abre e fecha o jogo.
 - Volta ao normal ao fechar o jogo, ao clicar em **Restaurar agora**, ao usar o atalho **Ctrl+Alt+R** (pode mudar) ou ao fechar o app.
 - Se o app ou o PC fecharem sem aviso, **na próxima abertura ele desfaz** o que ficou aplicado.
 - Botão **Testar resolução** (volta sozinho em alguns segundos), histórico de eventos, avisos, início com o Windows, backup das configurações (exportar/importar) e app em **português e inglês** (Geral → Sistema → Idioma).
+
+## Como fica
+
+<p align="center">
+  <img src="docs/gbooster-games-en.png" alt="Tela Jogos" width="760"><br><br>
+  <img src="docs/gbooster-general-en.png" alt="Tela Geral" width="760"><br><br>
+  <img src="docs/gbooster-history-en.png" alt="Tela Histórico" width="760">
+</p>
+
+(As imagens mostram o app em inglês; no app dá para trocar para português em Geral → Sistema → Idioma.)
 
 ## O que ele garante (e o que não garante)
 
@@ -124,6 +136,14 @@ they start and quit a game.
 - Reverts when the game closes, when you click **Restore now**, with the **Ctrl+Alt+R** hotkey (configurable), or when you quit the app.
 - If the app or the PC shuts down unexpectedly, **it undoes what was left applied** the next time it starts.
 - **Test resolution** button (reverts by itself after a few seconds), event history, notifications, start with Windows, settings backup (export/import) and the app in **Portuguese and English** (General → System → Language).
+
+## Screenshots
+
+<p align="center">
+  <img src="docs/gbooster-games-en.png" alt="Games page" width="760"><br><br>
+  <img src="docs/gbooster-general-en.png" alt="General page" width="760"><br><br>
+  <img src="docs/gbooster-history-en.png" alt="History page" width="760">
+</p>
 
 ## What it guarantees (and what it doesn't)
 
