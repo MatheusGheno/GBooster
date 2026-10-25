@@ -1,0 +1,7 @@
+bin/
+obj/
+publicar/
+.vs/
+*.user
+*.zip
+compilar-log.txt

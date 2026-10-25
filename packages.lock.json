@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net8.0-windows7.0": {
+      "NvAPIWrapper.Net": {
+        "type": "Direct",
+        "requested": "[0.8.*, )",
+        "resolved": "0.8.1.101",
+        "contentHash": "qX+5EQ32tCTqBkX/9BNfx7w4HPi18s3XhMubjbxSjPhYQ6pXWL+HGnaZEmGvFlOxvsQN+/6eV3x5bRo1CDY/mQ=="
+      }
+    },
+    "net8.0-windows7.0/win-x64": {}
+  }
+}
