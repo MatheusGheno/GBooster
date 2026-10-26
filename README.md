@@ -4,12 +4,11 @@
 
 **🇧🇷 Português** · [🇺🇸 English](#english)
 
-> Projeto pessoal, gratuito e de código aberto (licença MIT). Versão **1.0**. Tema escuro, em português e inglês. Se encontrar algum problema, abra uma issue.
+> Troca a resolução e a saturação por jogo e otimiza o Windows para jogar. Projeto pessoal, gratuito e de código aberto (licença MIT). Versão **1.0**, em português e inglês, tema escuro. Se encontrar algum problema, abra uma issue.
 
 ## O que é
 
-O GBooster é um programa para **Windows 10/11 (64 bits)** que fica na bandeja do sistema e cuida do seu PC
-para você jogar. Ele faz três coisas, cada uma na sua página:
+O GBooster é um programa para **Windows 10/11 (64 bits)** que fica na bandeja do sistema e prepara o PC para jogar: troca a resolução e a saturação do monitor quando o jogo abre, aplica ajustes do Windows pensados para jogos e limpa arquivos temporários. Os ajustes e a limpeza só rodam quando você clica, com ponto de restauração e Desfazer. Ele faz três coisas, cada uma na sua página:
 
 1. **Jogos:** quando um jogo cadastrado abre, troca a **resolução** do monitor em que o jogo está
    (por exemplo, uma resolução "esticada" como 1280×960), e opcionalmente a **taxa de atualização (Hz)** e a
@@ -91,6 +90,8 @@ Já vem com **Counter-Strike 2**, **Delta Force** e **Battlefield 6**, e dá par
 > "O Windows protegeu o computador". Clique em **Mais informações → Executar assim mesmo**.
 > Você pode conferir o arquivo com o `SHA256.txt` da versão.
 
+**Verificação de segurança (v1.0):** o `GBooster-win-x64.zip` da versão 1.0 foi analisado no VirusTotal: **0 de 64 antivírus** marcaram como malicioso ([ver relatório](https://www.virustotal.com/gui/file/1128b2e1e75166827cbb8bcf2f8cb16e598ae05ec1787c8de07fd3d419348d21)). Isso ajuda, mas não é garantia: alguns antivírus não conseguem analisar arquivos `.zip` e programas novos podem ser marcados por engano. O código é aberto para você conferir.
+
 A troca de tela funciona **sem administrador**. Para Desempenho, Limpeza (alguns itens) e ponto de restauração, use o botão **Reiniciar como administrador** que aparece no app.
 
 ## Primeiro teste (nesta ordem)
@@ -152,12 +153,11 @@ Instale o **.NET 8 SDK** e dê dois cliques em `COMPILAR.bat` (ou rode
 
 # GBooster (English)
 
-> A free, open-source personal project (MIT license). Version **1.0**. Dark theme, in Portuguese and English. If you find a problem, please open an issue.
+> Per-game resolution and saturation switching, plus Windows tweaks for gaming. A free, open-source personal project (MIT license). Version **1.0**, in Portuguese and English, dark theme. If you find a problem, please open an issue.
 
 ## What it is
 
-GBooster is a **Windows 10/11 (64-bit)** tray app that looks after your PC while you play. It does three things,
-each on its own page:
+GBooster is a **Windows 10/11 (64-bit)** tray app that gets your PC ready for gaming: it switches the monitor's resolution and saturation when a game starts, applies Windows tweaks aimed at gaming and cleans temporary files. The tweaks and the cleanup only run when you click, with a restore point and Undo. It does three things, each on its own page:
 
 1. **Games:** when a configured game starts, it switches the **resolution** of the monitor the game is on
    (for example a stretched resolution like 1280×960), and optionally the **refresh rate (Hz)** and the
@@ -239,6 +239,8 @@ It comes preconfigured for **Counter-Strike 2**, **Delta Force** and **Battlefie
 > **Windows SmartScreen warning:** since the app has no paid code-signing certificate, Windows may show
 > "Windows protected your PC". Click **More info → Run anyway**.
 > You can verify the download with the release's `SHA256.txt`.
+
+**Security check (v1.0):** the v1.0 `GBooster-win-x64.zip` was scanned on VirusTotal: **0 of 64 antivirus engines** flagged it as malicious ([see report](https://www.virustotal.com/gui/file/1128b2e1e75166827cbb8bcf2f8cb16e598ae05ec1787c8de07fd3d419348d21)). This helps but is not a guarantee: some engines can't scan `.zip` files, and new programs can be flagged by mistake. The code is open for you to check.
 
 Screen switching works **without administrator**. For Performance, some Cleanup items and the restore point, use the **Restart as administrator** button shown in the app.
 

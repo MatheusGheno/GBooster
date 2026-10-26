@@ -22,6 +22,8 @@ Cada versão publicada traz o hash SHA-256 do `GBooster.exe`. No PowerShell:
 
 O resultado deve ser igual ao da página da versão.
 
+O `GBooster-win-x64.zip` da versão 1.0 também foi analisado no VirusTotal (0 de 64 antivírus marcaram como malicioso): [relatório](https://www.virustotal.com/gui/file/1128b2e1e75166827cbb8bcf2f8cb16e598ae05ec1787c8de07fd3d419348d21). O `SHA256.txt` da versão é do `GBooster.exe`; o link acima é do zip inteiro.
+
 ## Aviso
 
 Programa independente, sem ligação com Valve, EA, Tencent/Level Infinite/Garena, Riot Games, FACEIT, ESEA, Gamers Club
