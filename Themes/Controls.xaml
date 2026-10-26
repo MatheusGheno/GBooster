@@ -338,6 +338,11 @@
               <Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource Brush.Accent}"/>
               <Setter TargetName="Mark" Property="Visibility" Value="Visible"/>
             </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+              <Setter Property="Opacity" Value="0.35"/>
+              <Setter Property="Cursor" Value="Arrow"/>
+              <Setter TargetName="Box" Property="BorderBrush" Value="{DynamicResource Brush.BorderStrong}"/>
+            </Trigger>
           </ControlTemplate.Triggers>
         </ControlTemplate>
       </Setter.Value>

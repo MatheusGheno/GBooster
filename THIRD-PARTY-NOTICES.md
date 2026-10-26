@@ -12,3 +12,10 @@ Você pode trocá-la por outra versão da mesma biblioteca.
 ## NVIDIA NvAPI
 A biblioteca acima acessa a API pública NvAPI, que faz parte do driver da NVIDIA instalado no seu computador.
 NVIDIA é marca registrada da NVIDIA Corporation.
+
+## NVIDIA Profile Inspector
+Os identificadores das opções de perfil da NVIDIA (DRS) usados pela página Desempenho foram portados do projeto NVIDIA Profile Inspector, de Orbmu2k.
+- Projeto: https://github.com/Orbmu2k/nvidiaProfileInspector
+- Licença: MIT
+
+O GBooster não inclui o programa; usa só os números dessas opções, chamando a API do driver (nvapi64.dll) por conta própria.

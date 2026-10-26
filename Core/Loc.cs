@@ -11,7 +11,7 @@ namespace GBooster.Core
     /// Idiomas do app (português e inglês). O texto no código e no XAML é escrito em português;
     /// em inglês, cada frase é trocada pela tradução desta tabela. Frase sem tradução aparece em português.
     /// </summary>
-    public static class Loc
+    public static partial class Loc
     {
         public static bool English { get; private set; }
 
@@ -25,7 +25,9 @@ namespace GBooster.Core
         public static string T(string pt)
         {
             if (!English || string.IsNullOrEmpty(pt)) return pt;
-            return En.TryGetValue(pt, out string? en) ? en : pt;
+            if (En.TryGetValue(pt, out string? en)) return en;
+            if (EnBoost.TryGetValue(pt, out string? en2)) return en2;
+            return pt;
         }
 
         /// <summary>Traduz o modelo e preenche os {0}, {1}… com os valores.</summary>
@@ -81,7 +83,7 @@ namespace GBooster.Core
             ["Aplicado agora"] = "Applied now",
             ["Tela agora"] = "Display now",
             ["Volta para isto ao sair do jogo"] = "Goes back to this when the game closes",
-            ["Restaurar agora"] = "Restore now",
+            ["Restaurar resolução agora"] = "Restore resolution now",
             ["Restaurar resolução e saturação agora"] = "Restore resolution and saturation now",
             ["Restaurar resolução e saturação agora (Ctrl+Alt+R)"] = "Restore resolution and saturation now (Ctrl+Alt+R)",
             ["aplicando em instantes…"] = "applying shortly…",
@@ -155,7 +157,7 @@ namespace GBooster.Core
             ["Pressione a combinação…"] = "Press the combination…",
             ["Mantido o atalho atual."] = "Keeping the current hotkey.",
             ["Esc cancela · Delete desativa o atalho."] = "Esc cancels · Delete turns the hotkey off.",
-            ["Atalho desativado. Use o botão “Restaurar agora” ou a bandeja."] = "Hotkey turned off. Use the “Restore now” button or the tray.",
+            ["Atalho desativado. Use o botão “Restaurar resolução agora” ou a bandeja."] = "Hotkey turned off. Use the “Restore resolution now” button or the tray.",
             ["Use Ctrl, Alt, Shift ou Win junto com a tecla (para não atrapalhar o jogo)."] =
                 "Use Ctrl, Alt, Shift or Win together with the key (so it doesn't get in the game's way).",
             ["Essa combinação já é usada por outro programa. Escolha outra."] = "Another program already uses this combination. Pick a different one.",
@@ -176,8 +178,8 @@ namespace GBooster.Core
             ["Há uma tela alterada agora. Restaure a tela (ou feche o jogo) antes de importar."] =
                 "The display is currently changed. Restore it (or close the game) before importing.",
             ["Arquivo inválido."] = "Invalid file.",
-            ["Isto substitui TODAS as configurações atuais (jogos, atalho e preferências). Continuar?"] =
-                "This replaces ALL current settings (games, hotkey and preferences). Continue?",
+            ["Isto substitui TODAS as configurações atuais (jogos e preferências). Continuar?"] =
+                "This replaces ALL current settings (games and preferences). Continue?",
             ["Esse arquivo não parece um backup do GBooster."] = "This file doesn't look like a GBooster backup.",
             ["Não consegui ler esse arquivo. Ele precisa ser um backup exportado pelo GBooster."] =
                 "Couldn't read this file. It must be a backup exported by GBooster.",

@@ -1,27 +1,68 @@
 <Window x:Class="GBooster.UI.NoticeWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="GBooster" Icon="pack://application:,,,/Assets/app.ico" Width="460" SizeToContent="Height" ResizeMode="NoResize" WindowStyle="ToolWindow"
+        xmlns:ui="clr-namespace:GBooster.UI"
+        Title="GBooster" Icon="pack://application:,,,/Assets/app.ico" Width="500" SizeToContent="Height" ResizeMode="NoResize" WindowStyle="ToolWindow"
         WindowStartupLocation="CenterOwner" ShowInTaskbar="False"
         Background="{DynamicResource Brush.Window}" FontFamily="{StaticResource Font.Body}">
-  <Grid Margin="22">
-    <Grid.RowDefinitions>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="Auto"/>
-      <RowDefinition Height="Auto"/>
-    </Grid.RowDefinitions>
-    <TextBlock Text="Antes de começar" FontFamily="{StaticResource Font.Display}" FontSize="20" FontWeight="Bold"
-               Foreground="{DynamicResource Brush.TextPrimary}"/>
-    <TextBlock Grid.Row="1" Margin="0,10,0,0" TextWrapping="Wrap" FontSize="13" LineHeight="20"
-               Foreground="{DynamicResource Brush.TextSecondary}"
-               Text="Para a resolução esticada ocupar a tela toda (sem barras pretas), ative a escala “Tela inteira” nas configurações da sua placa de vídeo."/>
-    <TextBlock Grid.Row="2" Margin="0,12,0,0" TextWrapping="Wrap" FontSize="13" LineHeight="20"
-               Foreground="{DynamicResource Brush.TextSecondary}"
-               Text="A configuração de saturação só funciona em placas NVIDIA."/>
-    <StackPanel Grid.Row="4" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,18,0,0">
-      <Button Content="OK" Style="{StaticResource BtnPrimary}" Height="40" IsDefault="True" IsCancel="True" Click="Ok_Click"/>
+  <StackPanel Margin="28,24,28,24">
+    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+      <ui:BrandMark Width="40" Height="40"/>
+      <TextBlock VerticalAlignment="Center" Margin="10,0,0,0" FontFamily="{StaticResource Font.Display}" FontSize="24" FontWeight="Bold"
+                 Foreground="{DynamicResource Brush.TextPrimary}">
+        <Run Text="G"/><Run Text="BOOSTER" Foreground="{DynamicResource Brush.LogoAccent}"/>
+      </TextBlock>
     </StackPanel>
-  </Grid>
+    <TextBlock Text="Dicas antes de usar" HorizontalAlignment="Center" Margin="0,18,0,0" FontFamily="{StaticResource Font.Display}" FontSize="20" FontWeight="Bold"
+               Foreground="{DynamicResource Brush.TextPrimary}"/>
+    <StackPanel Margin="0,6,0,0">
+      <TextBlock Text="TELA E RESOLUÇÃO" Margin="0,10,0,6" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource Brush.TextAccent}"/>
+      <Grid Margin="0,0,0,6">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="16"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Text="•" FontSize="13" LineHeight="20" Foreground="{DynamicResource Brush.TextTertiary}"/>
+        <TextBlock Grid.Column="1" TextWrapping="Wrap" FontSize="13" LineHeight="20" Foreground="{DynamicResource Brush.TextSecondary}"
+                   Text="Para a resolução esticada ocupar a tela toda (sem barras pretas), ative a escala “Tela inteira” nas configurações da sua placa de vídeo."/>
+      </Grid>
+      <Grid Margin="0,0,0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="16"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Text="•" FontSize="13" LineHeight="20" Foreground="{DynamicResource Brush.TextTertiary}"/>
+        <TextBlock Grid.Column="1" TextWrapping="Wrap" FontSize="13" LineHeight="20" Foreground="{DynamicResource Brush.TextSecondary}"
+                   Text="A configuração de saturação só funciona em placas NVIDIA."/>
+      </Grid>
+      <TextBlock Text="DENTRO DO JOGO" Margin="0,14,0,6" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource Brush.TextAccent}"/>
+      <Grid Margin="0,0,0,6">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="16"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Text="•" FontSize="13" LineHeight="20" Foreground="{DynamicResource Brush.TextTertiary}"/>
+        <TextBlock Grid.Column="1" TextWrapping="Wrap" FontSize="13" LineHeight="20" Foreground="{DynamicResource Brush.TextSecondary}"
+                   Text="Para alternar de janela (Alt+Tab) sem travadas, deixe o jogo em “tela cheia sem bordas” ou “janela sem bordas”. Na tela cheia exclusiva, a troca costuma demorar mais."/>
+      </Grid>
+      <Grid Margin="0,0,0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="16"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Text="•" FontSize="13" LineHeight="20" Foreground="{DynamicResource Brush.TextTertiary}"/>
+        <TextBlock Grid.Column="1" TextWrapping="Wrap" FontSize="13" LineHeight="20" Foreground="{DynamicResource Brush.TextSecondary}"
+                   Text="Se você clicar em “Restaurar resolução agora” com o jogo aberto, o GBooster para de trocar a tela nesse jogo até você fechá-lo. Ao abrir o jogo de novo, a troca volta ao normal."/>
+      </Grid>
+      <TextBlock Text="ANTES DE OTIMIZAR" Margin="0,14,0,6" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource Brush.TextAccent}"/>
+      <Grid Margin="0,0,0,6">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="16"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Text="•" FontSize="13" LineHeight="20" Foreground="{DynamicResource Brush.TextTertiary}"/>
+        <TextBlock Grid.Column="1" TextWrapping="Wrap" FontSize="13" LineHeight="20" Foreground="{DynamicResource Brush.TextSecondary}"
+                   Text="Crie um ponto de restauração na página Desempenho."/>
+      </Grid>
+      <Grid Margin="0,0,0,6">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="16"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Text="•" FontSize="13" LineHeight="20" Foreground="{DynamicResource Brush.TextTertiary}"/>
+        <TextBlock Grid.Column="1" TextWrapping="Wrap" FontSize="13" LineHeight="20" Foreground="{DynamicResource Brush.TextSecondary}"
+                   Text="Feche ISLC, Wub, Timer Resolution e MSI util, e desligue “otimizar jogos” no app da NVIDIA."/>
+      </Grid>
+      <Grid Margin="0,0,0,0">
+        <Grid.ColumnDefinitions><ColumnDefinition Width="16"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+        <TextBlock Text="•" FontSize="13" LineHeight="20" Foreground="{DynamicResource Brush.TextTertiary}"/>
+        <TextBlock Grid.Column="1" TextWrapping="Wrap" FontSize="13" LineHeight="20" Foreground="{DynamicResource Brush.TextSecondary}"
+                   Text="Em notebook, a otimização gasta mais bateria e esquenta mais."/>
+      </Grid>
+    </StackPanel>
+    <Button Content="OK" Style="{StaticResource BtnPrimary}" Height="40" MinWidth="110" IsDefault="True" IsCancel="True" Click="Ok_Click"
+            HorizontalAlignment="Center" Margin="0,24,0,0"/>
+  </StackPanel>
 </Window>

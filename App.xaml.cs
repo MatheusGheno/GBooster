@@ -11,10 +11,6 @@ namespace GBooster
 {
     public partial class App : System.Windows.Application
     {
-        private const int HotkeyId = 0x4742;
-        private const int WM_HOTKEY = 0x0312;
-        private const uint MOD_NOREPEAT = 0x4000;
-
         private Mutex? _mutex;
         private Engine? _engine;
         private MainWindow? _window;
@@ -29,6 +25,12 @@ namespace GBooster
 
             // Só uma cópia do app por vez.
             _mutex = new Mutex(true, "GBooster.SingleInstance", out bool created);
+            if (!created && e.Args.Contains("--elevated"))
+            {
+                // Veio do "Reiniciar como administrador": espera a cópia anterior terminar de fechar.
+                try { created = _mutex.WaitOne(10000); }
+                catch (AbandonedMutexException) { created = true; }
+            }
             if (!created)
             {
                 Shutdown();
@@ -66,20 +68,13 @@ namespace GBooster
 
             _window = new MainWindow(_engine);
             _hwnd = new WindowInteropHelper(_window).EnsureHandle();
-            HwndSource.FromHwnd(_hwnd)?.AddHook(WndProc);
-            _window.ApplyHotkey = ApplyHotkey;
-            if (!ApplyHotkey())
-            {
-                _engine.AddLog(Loc.T("Atalho indisponível"), Loc.T("outro programa já usa essa combinação"), false);
-            }
 
             _tray = new TrayService(
                 _engine,
                 () => _window.ShowFromTray(),
                 ExitApp,
                 () => _window.SaveSettingsNow(),
-                () => _window.RefreshAll(),
-                () => HotkeyFormatter.Format(settings.HotkeyModifiers, settings.HotkeyKey));
+                () => _window.RefreshAll());
             _engine.Notify += (title, text) => _tray.Balloon(title, text);
             _engine.Changed += UpdateTooltip;
 
@@ -114,26 +109,6 @@ namespace GBooster
             }
         }
 
-        /// <summary>(Re)registra o atalho global conforme a configuração. false = combinação já em uso.</summary>
-        private bool ApplyHotkey()
-        {
-            if (_hwnd == IntPtr.Zero || _engine == null) return true;
-            NativeMethods.UnregisterHotKey(_hwnd, HotkeyId);
-            AppSettings s = _engine.Settings;
-            if (s.HotkeyKey == 0) return true; // desativado
-            return NativeMethods.RegisterHotKey(_hwnd, HotkeyId, s.HotkeyModifiers | MOD_NOREPEAT, s.HotkeyKey);
-        }
-
-        private IntPtr WndProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
-        {
-            if (msg == WM_HOTKEY && wParam.ToInt32() == HotkeyId)
-            {
-                _engine?.RestoreNow(true);
-                handled = true;
-            }
-            return IntPtr.Zero;
-        }
-
         private void UpdateTooltip()
         {
             if (_tray == null || _engine == null) return;
@@ -158,7 +133,6 @@ namespace GBooster
 
             try { _timer?.Stop(); } catch { }
             try { _engine?.Shutdown(); } catch { }          // devolve resolução e saturação
-            try { if (_hwnd != IntPtr.Zero) NativeMethods.UnregisterHotKey(_hwnd, HotkeyId); } catch { }
             try { _window?.SaveSettingsNow(); } catch { }
             try { _tray?.Dispose(); } catch { }
             if (_window != null)

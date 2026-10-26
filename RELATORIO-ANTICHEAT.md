@@ -1,4 +1,4 @@
-# GBooster — relatório de risco de anti-cheat (pesquisa em 25/10/2026)
+# GBooster — relatório de risco de anti-cheat (pesquisa em 25/10/2026, atualizado na v1.0)
 
 **Conclusão curta:** não existe "100% garantido". Nenhuma das três empresas publica uma lista
 de programas permitidos, então ninguém consegue prometer isso. O que dá para afirmar, com base
@@ -39,7 +39,6 @@ tópico há opiniões de que "dá ban", todas sem fonte oficial.
 | Ler lista de processos (Toolhelp) | Muito baixo | Muito baixo | Muito baixo | Mesma leitura do Gerenciador de Tarefas/Steam. Não abre o processo. |
 | Achar o monitor pela janela | Muito baixo | Muito baixo | Muito baixo | Só pergunta posição da janela ao Windows. |
 | Trocar resolução (ChangeDisplaySettingsEx) | Muito baixo | Muito baixo | Muito baixo | API padrão do Windows (QRes, os próprios jogos). Risco real é **crash/instabilidade**, não ban. |
-| Atalho global (RegisterHotKey) | Muito baixo | Muito baixo | Muito baixo | Sem hook de teclado e sem emular entrada. |
 | Iniciar com o Windows, bandeja | Nenhum | Nenhum | Nenhum | |
 | **Saturação NVIDIA (NvAPI)** | Baixo (sem política oficial; precedente de uso comum) | **Indefinido** (sem política publicada) | **Indefinido/médio** (zona cinzenta de "vantagem visual"; EA não respondeu) | Não injeta nada; é o mesmo ajuste do Painel NVIDIA. O risco é de **interpretação da regra**, não técnico. |
 
@@ -51,8 +50,8 @@ tópico há opiniões de que "dá ban", todas sem fonte oficial.
    no driver. Se quiser mesmo usar, pergunte por escrito ao suporte da EA/Level Infinite e guarde a
    resposta. Em CS2, uso moderado é o cenário de menor risco, sem garantia oficial.
 2. **Trocar resolução com o jogo ainda carregando.** Não é banível, mas o jogo e o anti-cheat estão
-   iniciando e podem travar. *Correção já aplicada:* espera fixa de 5 s antes de mexer na tela. Se travar em
-   BF6/Delta Force, aumente para 10–15 s.
+   iniciando e podem travar. *Correção já aplicada:* espera de 5 s (padrão) antes de mexer na tela, que dá para mudar em
+   Geral → Esperar antes de aplicar. Se travar em BF6/Delta Force, aumente para 10–15 s.
 3. **Programa novo, sem assinatura digital.** Antivírus e anti-cheats desconfiam de executáveis
    desconhecidos (há relatos de antivírus acusando até o executável do Delta Force). Não é regra
    violada, mas pode gerar alerta. *Correção:* se for distribuir a mais gente, assinar o executável;
@@ -63,12 +62,27 @@ tópico há opiniões de que "dá ban", todas sem fonte oficial.
    próprias; um comentário em fórum diz que o ESEA já baniu por vibranceGUI, sem fonte oficial.
    Se joga por elas, verifique as regras delas antes.
 
+## Boost (Desempenho e Limpeza) e anti-cheat — adicionado na v1.0
+
+Esta pesquisa de regras cobre a **troca de tela**. O **Boost** não mexe no jogo, mas muda o Windows
+(registro, plano de energia, `bcdedit`, serviços, perfil NVIDIA e modo MSI), e por isso é um risco de natureza
+diferente: **não é ban por "mexer no jogo", e sim possível incompatibilidade com anti-cheats que checam o estado do sistema.**
+
+- O app **não** liga modo de teste, não desliga a verificação de assinatura de drivers, não instala driver,
+  e **não** mexe em VBS/HVCI, Secure Boot, TPM, Spectre, ASLR ou CFG. São os itens que esses anti-cheats mais cobram.
+- Os ajustes de boot são só `disabledynamictick`, `useplatformtick` e remoção de `useplatformclock` (timing).
+- **Riot Vanguard (Valorant): não foi pesquisado nem testado.** O Vanguard roda como driver e é mais exigente com
+  o estado do sistema. O risco mais provável não é banimento, e sim o Vanguard se recusar a abrir o jogo
+  depois de ajustes de boot/driver. Se você joga Valorant: não cadastre o jogo no GBooster, otimize e reinicie o PC
+  antes de abrir o Vanguard, e se der erro use **Desfazer otimizações** e reinicie.
+- Nenhum ajuste do Boost roda com um jogo cadastrado aberto.
+
 ## O que não consegui verificar
 
 - Lista interna de assinaturas/denylists (não é pública).
 - Se algum desses anti-cheats registra "janela consultada por outro processo" (não há indício; o
   app não abre o processo).
-- Nenhum teste real no seu PC: o código nem foi compilado aqui.
+- Nenhum teste real em anti-cheats: tudo acima vem das regras publicadas e da leitura do código, não de testes com contas de jogo.
 
 ## Fontes
 

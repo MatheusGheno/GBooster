@@ -47,6 +47,12 @@ namespace GBooster.Core
         public bool ShowSplash { get; set; } = true;
         /// <summary>"auto" (idioma do Windows), "pt" ou "en".</summary>
         public string Language { get; set; } = "auto";
+        /// <summary>Ajustes do Otimizar que o usuário desmarcou (ids).</summary>
+        public List<string> BoostSkip { get; set; } = new List<string>();
+        /// <summary>Ajustes que o último Otimizar deixou aplicados (para avisar se o Windows desfizer algum).</summary>
+        public List<string> BoostApplied { get; set; } = new List<string>();
+        /// <summary>true depois que o tour de boas-vindas foi visto ou pulado.</summary>
+        public bool TourSeen { get; set; } = false;
 
         /// <summary>Copia tudo de outro conjunto de configurações para este (usado ao importar um backup).</summary>
         public void CopyFrom(AppSettings o)
@@ -62,6 +68,8 @@ namespace GBooster.Core
             ScalingNoticeSeen = o.ScalingNoticeSeen;
             ShowSplash = o.ShowSplash;
             Language = o.Language;
+            BoostSkip = o.BoostSkip ?? new List<string>();
+            TourSeen = o.TourSeen;
             HotkeyModifiers = o.HotkeyModifiers;
             HotkeyKey = o.HotkeyKey;
         }

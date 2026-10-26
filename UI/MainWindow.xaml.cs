@@ -26,8 +26,6 @@ namespace GBooster.UI
         public bool ExitRequested { get; set; }
 
         /// <summary>Quem registra o atalho no Windows (o App). Devolve false se a combinação já está em uso.</summary>
-        public Func<bool>? ApplyHotkey { get; set; }
-        private bool _capturingHotkey;
 
         private AppSettings S => _engine.Settings;
         private static readonly GameConfig NewGameItem = new GameConfig { Id = "__new__", Name = "＋  Novo jogo…" };
@@ -54,7 +52,9 @@ namespace GBooster.UI
             };
             _previewTimer.Tick += (s, e) => PreviewTick();
             _engine.Changed += RefreshAll;
+            InitCapture();
 
+            InitBoost();
             LoadGeneral();
             ReloadGames(S.SelectedGameId);
             _loading = false;
@@ -138,6 +138,10 @@ namespace GBooster.UI
                 SaveSettingsNow();
                 new NoticeWindow { Owner = this }.ShowDialog();
             }
+            if (!S.TourSeen && !_tourActive)
+            {
+                Dispatcher.BeginInvoke(new Action(StartTour), DispatcherPriority.Background);
+            }
         }
 
         public void SaveSettingsNow()
@@ -157,17 +161,38 @@ namespace GBooster.UI
         // ------------------------------------------------------------------
         private void Tab_Checked(object sender, RoutedEventArgs e)
         {
-            if (PageGames == null || PageGeneral == null || PageLog == null)
+            if (PageGames == null || PageGeneral == null || PageLog == null || PagePerf == null || PageClean == null || PageSystem == null || PageHelp == null)
             {
                 return;
             }
+            PageHelp.Visibility = Visibility.Collapsed;
+            UpdateHelpBtn();
             PageGames.Visibility = TabGames.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
             PageGeneral.Visibility = TabGeneral.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
             PageLog.Visibility = TabLog.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
-            PageTitle.Text = Loc.T(TabGeneral.IsChecked == true ? "Geral" : TabLog.IsChecked == true ? "Histórico" : "Jogos");
+            PagePerf.Visibility = TabPerf.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+            PageClean.Visibility = TabClean.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+            PageSystem.Visibility = TabSystem.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+            PageTitle.Text = Loc.T(TabGeneral.IsChecked == true ? "Geral"
+                : TabLog.IsChecked == true ? "Histórico"
+                : TabPerf.IsChecked == true ? "Desempenho"
+                : TabClean.IsChecked == true ? "Limpeza"
+                : TabSystem.IsChecked == true ? "Meu sistema" : "Jogos");
             if (TabLog.IsChecked == true)
             {
                 RefreshLog();
+            }
+            if (TabPerf.IsChecked == true)
+            {
+                RefreshPerf();
+            }
+            if (TabClean.IsChecked == true)
+            {
+                RefreshClean();
+            }
+            if (TabSystem.IsChecked == true)
+            {
+                RefreshSystem();
             }
         }
 
@@ -182,8 +207,7 @@ namespace GBooster.UI
             RefreshLog();
             RefreshTestButton();
             UpdateSatOutside();
-            RestoreBtn.ToolTip = Loc.T("Restaurar resolução e saturação agora") +
-                (S.HotkeyKey != 0 ? " (" + HotkeyFormatter.Format(S.HotkeyModifiers, S.HotkeyKey) + ")" : "");
+            RestoreBtn.ToolTip = Loc.T("Restaurar resolução e saturação agora");
         }
 
         public void RefreshStatus()
@@ -236,6 +260,22 @@ namespace GBooster.UI
                     StatusTitle.Text = Loc.T("DETECTADO");
                     StatusLine1.Text = Loc.T("aplicando em instantes…");
                 }
+                else if (_engine.IgnoredGameName != null)
+                {
+                    StatusBar.SetResourceReference(Border.BackgroundProperty, "Brush.WarnBg");
+                    StatusBar.SetResourceReference(Border.BorderBrushProperty, "Brush.WarnBorder");
+                    StatusDot.SetResourceReference(System.Windows.Shapes.Shape.FillProperty, "Brush.Warn");
+                    StatusTitle.SetResourceReference(TextBlock.ForegroundProperty, "Brush.Warn");
+                    StatusTitle.Text = Loc.T("PAUSADO");
+                    StatusProc.Text = _engine.IgnoredGameName;
+                    StatusProc.ToolTip = StatusProc.Text;
+                    StatusProcRow.Visibility = Visibility.Visible;
+                    StatusLine1.Text = Loc.T("restaurado à mão");
+                    StatusLine1Row.ToolTip = Loc.T("Você restaurou a tela com o jogo ainda aberto.");
+                    StatusLine2.Text = Loc.T("volta ao fechar o jogo");
+                    StatusLine2Row.ToolTip = Loc.T("A troca de tela só volta quando o jogo fechar. Ao abrir de novo, tudo volta ao normal.");
+                    StatusLine2Row.Visibility = Visibility.Visible;
+                }
                 else if (S.PauseDetection)
                 {
                     StatusTitle.Text = Loc.T("PAUSA GERAL");
@@ -276,12 +316,26 @@ namespace GBooster.UI
             if (_previewLeft <= 0) TestText.Text = Loc.T("Testar resolução");
         }
 
+        private string _logFilter = "all";
+
         private void RefreshLog()
         {
-            LogList.ItemsSource = _engine.Log.Take(30).ToList();
+            var rows = _engine.Log.Where(l => _logFilter == "all" || l.Kind == _logFilter).Take(40).ToList();
+            LogList.ItemsSource = rows;
+            LogEmpty.Visibility = rows.Count == 0 ? Visibility.Visible : Visibility.Collapsed;
+            foreach (Button b in new[] { LogFAll, LogFGame, LogFBoost })
+            {
+                b.Style = (Style)FindResource((string)b.Tag == _logFilter ? "BtnSmAccent" : "BtnSm");
+            }
         }
 
-        private void Restore_Click(object sender, RoutedEventArgs e) => _engine.RestoreNow(false);
+        private void LogFilter_Click(object sender, RoutedEventArgs e)
+        {
+            _logFilter = (string)((Button)sender).Tag;
+            RefreshLog();
+        }
+
+        private void Restore_Click(object sender, RoutedEventArgs e) => _engine.RestoreByUser();
 
         // ------------------------------------------------------------------
         // Jogos
@@ -313,6 +367,8 @@ namespace GBooster.UI
             HzCombo.IsEnabled = has;
             TestBtn.IsEnabled = has;
 
+            GamePrefixRun.Text = Loc.T("AJUSTES PARA");
+            GameNameRun.Text = g != null ? g.Name.ToUpper(System.Globalization.CultureInfo.CurrentCulture) : "";
             if (g != null)
             {
                 S.SelectedGameId = g.Id;
@@ -385,12 +441,14 @@ namespace GBooster.UI
         {
             ProcHint.Text = g.HasProblem
                 ? Loc.T("Selecione o .exe para detectar este jogo.")
-                : Loc.T("Use a lupa para escolher o .exe do jogo.");
+                : Loc.T("Clique no campo para escolher o .exe do jogo.");
             if (g.HasProblem) ProcHint.SetResourceReference(TextBlock.ForegroundProperty, "Brush.Warn");
             else ProcHint.SetResourceReference(TextBlock.ForegroundProperty, "Brush.TextTertiary");
             bool before = _loading;
             _loading = true;
+            // Os ícones da lista leem HasProblem/Enabled uma vez só; trocar a seleção força a leitura de novo.
             GameCombo.Items.Refresh();
+            GameCombo.SelectedItem = null;
             GameCombo.SelectedItem = g;
             _loading = before;
         }
@@ -627,10 +685,7 @@ namespace GBooster.UI
             NotifyCheck.IsChecked = S.NotifyOnChange;
             SplashCheck.IsChecked = S.ShowSplash;
             LangCombo.SelectedIndex = Loc.English ? 1 : 0;
-            HotkeyHint.Text = Loc.T("Combine Ctrl, Alt, Shift ou Win com outra tecla.");
             LoadWaitCombo();
-            HotkeyText.Text = HotkeyFormatter.Format(S.HotkeyModifiers, S.HotkeyKey);
-            HotkeyBtn.Content = Loc.T("Alterar");
         }
 
         private void General_Click(object sender, RoutedEventArgs e)
@@ -720,98 +775,19 @@ namespace GBooster.UI
                 System.Windows.MessageBox.Show(err ?? Loc.T("Arquivo inválido."), "GBooster");
                 return;
             }
-            if (System.Windows.MessageBox.Show(Loc.T("Isto substitui TODAS as configurações atuais (jogos, atalho e preferências). Continuar?"),
+            if (System.Windows.MessageBox.Show(Loc.T("Isto substitui TODAS as configurações atuais (jogos e preferências). Continuar?"),
                     "GBooster", MessageBoxButton.YesNo) != MessageBoxResult.Yes) return;
 
             bool wasStart = S.StartWithWindows;
             S.CopyFrom(imp);
             if (S.StartWithWindows != wasStart) AutoStart.Set(S.StartWithWindows);
             Store.SaveSettings(S);
-            ApplyHotkey?.Invoke();
             LoadGeneral();
             ReloadGames(S.SelectedGameId);
             RefreshAll();
         }
 
         // ------------------------------------------------------------------
-        // Atalho de emergência (configurável)
-        // ------------------------------------------------------------------
-        private void HotkeyBtn_Click(object sender, RoutedEventArgs e)
-        {
-            if (_capturingHotkey) { HotkeyHint.Text = Loc.T("Mantido o atalho atual."); EndHotkeyCapture(); return; }
-            _capturingHotkey = true;
-            HotkeyText.Text = Loc.T("Pressione a combinação…");
-            HotkeyBtn.Content = Loc.T("Cancelar");
-            HotkeyHint.Text = Loc.T("Esc cancela · Delete desativa o atalho.");
-            HotkeyBtn.Focus();
-        }
-
-        private void HotkeyBtn_LostFocus(object sender, KeyboardFocusChangedEventArgs e) => EndHotkeyCapture();
-
-        private void EndHotkeyCapture()
-        {
-            _capturingHotkey = false;
-            HotkeyText.Text = HotkeyFormatter.Format(S.HotkeyModifiers, S.HotkeyKey);
-            HotkeyBtn.Content = Loc.T("Alterar");
-        }
-
-        private void HotkeyBtn_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (!_capturingHotkey) return;
-            e.Handled = true;
-
-            Key key = e.Key == Key.System ? e.SystemKey : e.Key;
-
-            if (key == Key.Escape)
-            {
-                HotkeyHint.Text = Loc.T("Mantido o atalho atual.");
-                EndHotkeyCapture();
-                return;
-            }
-            if (key == Key.Delete || key == Key.Back)
-            {
-                S.HotkeyModifiers = 0;
-                S.HotkeyKey = 0;
-                ApplyHotkey?.Invoke();
-                HotkeyHint.Text = Loc.T("Atalho desativado. Use o botão “Restaurar agora” ou a bandeja.");
-                SaveSettingsNow();
-                EndHotkeyCapture();
-                RefreshAll();
-                return;
-            }
-            if (key == Key.LeftCtrl || key == Key.RightCtrl || key == Key.LeftAlt || key == Key.RightAlt ||
-                key == Key.LeftShift || key == Key.RightShift || key == Key.LWin || key == Key.RWin || key == Key.System)
-            {
-                return; // só segurou um modificador; espera a tecla principal
-            }
-
-            uint mods = (uint)Keyboard.Modifiers; // Alt=1, Ctrl=2, Shift=4, Win=8 (igual ao Windows)
-            if (mods == 0)
-            {
-                HotkeyHint.Text = Loc.T("Use Ctrl, Alt, Shift ou Win junto com a tecla (para não atrapalhar o jogo).");
-                return;
-            }
-            int vk = KeyInterop.VirtualKeyFromKey(key);
-            if (vk == 0) return;
-
-            uint oldMods = S.HotkeyModifiers, oldKey = S.HotkeyKey;
-            S.HotkeyModifiers = mods;
-            S.HotkeyKey = (uint)vk;
-            if (ApplyHotkey != null && !ApplyHotkey())
-            {
-                S.HotkeyModifiers = oldMods;
-                S.HotkeyKey = oldKey;
-                ApplyHotkey();
-                HotkeyHint.Text = Loc.T("Essa combinação já é usada por outro programa. Escolha outra.");
-                EndHotkeyCapture();
-                return;
-            }
-
-            HotkeyHint.Text = Loc.T("Atalho salvo.");
-            SaveSettingsNow();
-            EndHotkeyCapture();
-            RefreshAll();
-        }
 
         // ------------------------------------------------------------------
         // Log

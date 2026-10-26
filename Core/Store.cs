@@ -164,6 +164,20 @@ namespace GBooster.Core
         public string Detail { get; set; } = "";
         /// <summary>True para eventos de "algo foi aplicado" (bolinha laranja).</summary>
         public bool Active { get; set; }
+        /// <summary>"game" (troca de tela) ou "boost" (Desempenho, Limpeza).</summary>
+        public string Kind { get; set; } = "game";
+
+        [System.Text.Json.Serialization.JsonIgnore]
+        public string DateText
+        {
+            get
+            {
+                int d = (DateTime.Today - Time.Date).Days;
+                if (d <= 0) return Loc.T("hoje");
+                if (d == 1) return Loc.T("ontem");
+                return Time.ToString("dd/MM");
+            }
+        }
 
         [System.Text.Json.Serialization.JsonIgnore]
         public string TimeText => Time.ToString("HH:mm:ss");

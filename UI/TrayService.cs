@@ -15,19 +15,17 @@ namespace GBooster.UI
         private readonly Action _exit;
         private readonly Action _saveSettings;
         private readonly Action _refreshUi;
-        private readonly Func<string> _hotkeyText;
         private TimeSpan _lastCpu = TimeSpan.Zero;
         private DateTime _lastWall = DateTime.UtcNow;
         private double _lastPercent;
 
-        public TrayService(Engine engine, Action open, Action exit, Action saveSettings, Action refreshUi, Func<string> hotkeyText)
+        public TrayService(Engine engine, Action open, Action exit, Action saveSettings, Action refreshUi)
         {
             _engine = engine;
             _open = open;
             _exit = exit;
             _saveSettings = saveSettings;
             _refreshUi = refreshUi;
-            _hotkeyText = hotkeyText;
 
             _icon = new NotifyIcon
             {
@@ -77,8 +75,7 @@ namespace GBooster.UI
             });
 
             m.AddSeparator();
-            string hk = _hotkeyText();
-            m.AddItem(Loc.T("Restaurar agora"), () => _engine.RestoreNow(false), _engine.Settings.HotkeyKey == 0 ? null : hk, MenuDot.None, _engine.IsActive);
+            m.AddItem(Loc.T("Restaurar resolução agora"), () => _engine.RestoreByUser(), null, MenuDot.None, _engine.IsActive);
 
             m.AddSeparator();
             m.AddInfo(UsageText());

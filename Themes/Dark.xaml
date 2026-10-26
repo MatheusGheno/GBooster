@@ -21,6 +21,9 @@
   <SolidColorBrush x:Key="Brush.Warn" Color="#f2c14e"/>
   <SolidColorBrush x:Key="Brush.WarnBg" Color="#1Af2c14e"/>
   <SolidColorBrush x:Key="Brush.WarnBorder" Color="#4Df2c14e"/>
+  <SolidColorBrush x:Key="Brush.Bad" Color="#ff6b6b"/>
+  <SolidColorBrush x:Key="Brush.BadBg" Color="#1Aff6b6b"/>
+  <SolidColorBrush x:Key="Brush.BadBorder" Color="#4Dff6b6b"/>
   <SolidColorBrush x:Key="Brush.Accent" Color="#ff7a14"/>
   <SolidColorBrush x:Key="Brush.AccentHover" Color="#ff9440"/>
   <SolidColorBrush x:Key="Brush.AccentPressed" Color="#d95f0c"/>

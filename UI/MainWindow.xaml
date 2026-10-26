@@ -71,38 +71,36 @@
               <TextBlock x:Name="StatusLine2" Grid.Column="1" Style="{StaticResource Mono}" FontSize="10" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
                          Foreground="{DynamicResource Brush.TextSecondary}"/>
             </Grid>
-            <Button x:Name="RestoreBtn" Content="Restaurar agora" Style="{StaticResource BtnSm}" Margin="0,10,0,0" HorizontalAlignment="Stretch"
-                    ToolTip="Restaurar resolução e saturação agora (Ctrl+Alt+R)" Click="Restore_Click"/>
+            <Button x:Name="RestoreBtn" Content="Restaurar resolução agora" Style="{StaticResource BtnSm}" Margin="0,10,0,0" HorizontalAlignment="Stretch"
+                    ToolTip="Restaurar resolução e saturação agora" Click="Restore_Click"/>
           </StackPanel>
         </Border>
 
         <!-- Itens (largura total) -->
         <StackPanel Grid.Row="2" Margin="0,6,0,0">
-          <TextBlock Text="JOGOS" Style="{StaticResource Label}" Margin="24,6,0,6"/>
           <RadioButton x:Name="TabGames" Content="Jogos" GroupName="tabs" IsChecked="True" Style="{StaticResource NavItem}" Checked="Tab_Checked"
                        ui:Nav.Icon="M5.2,4.5 H10.8 A3.5,3.5 0 0 1 14.2,7.3 L14.7,10 A1.8,1.8 0 0 1 11.5,11.4 L10,9.8 H6 L4.7,11.4 A1.8,1.8 0 0 1 1.5,10 L2,7.3 A3.5,3.5 0 0 1 5.2,4.5 Z M5.4,6.4 V8.4 M4.4,7.4 H6.4 M10.6,6.6 H10.61 M12,8 H12.01"/>
-          <RadioButton x:Name="TabLog" Content="Histórico" GroupName="tabs" Style="{StaticResource NavItem}" Checked="Tab_Checked"
-                       ui:Nav.Icon="M8,2 A6,6 0 1 1 7.99,2 M8,5 V8 L10,9.5"/>
 
           <Border Style="{StaticResource Divider}" Margin="16,14,16,10"/>
-          <StackPanel Orientation="Horizontal" Margin="24,0,0,6">
-            <TextBlock Text="BOOST" Style="{StaticResource Label}" VerticalAlignment="Center"/>
-            <Border Margin="8,0,0,0" Padding="8,1" CornerRadius="10" BorderThickness="1" VerticalAlignment="Center"
-                    Background="{DynamicResource Brush.Field}" BorderBrush="{DynamicResource Brush.BorderSubtle}">
-              <TextBlock Text="EM BREVE" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource Brush.TextTertiary}"/>
-            </Border>
-          </StackPanel>
-          <RadioButton Content="Limpeza" IsEnabled="False" GroupName="soon1" Style="{StaticResource NavItem}"
-                       ui:Nav.Icon="M8,2 L9.2,6.8 L14,8 L9.2,9.2 L8,14 L6.8,9.2 L2,8 L6.8,6.8 Z"/>
-          <RadioButton Content="Desempenho" IsEnabled="False" GroupName="soon2" Style="{StaticResource NavItem}"
+          <TextBlock Text="BOOST" Style="{StaticResource Label}" Margin="24,0,0,6"/>
+          <RadioButton x:Name="TabPerf" Content="Desempenho" GroupName="tabs" Style="{StaticResource NavItem}" Checked="Tab_Checked"
                        ui:Nav.Icon="M2,11 A6,6 0 1 1 14,11 M8,11 L11,6"/>
+          <RadioButton x:Name="TabClean" Content="Limpeza" GroupName="tabs" Style="{StaticResource NavItem}" Checked="Tab_Checked"
+                       ui:Nav.Icon="M8,2 L9.2,6.8 L14,8 L9.2,9.2 L8,14 L6.8,9.2 L2,8 L6.8,6.8 Z"/>
+
+          <Border Style="{StaticResource Divider}" Margin="16,14,16,10"/>
+          <TextBlock Text="CONFIGURAÇÕES" Style="{StaticResource Label}" Margin="24,0,0,6"/>
+          <RadioButton x:Name="TabGeneral" Content="Geral" GroupName="tabs" Style="{StaticResource NavItem}" Checked="Tab_Checked"
+                       ui:Nav.Icon="M2,5 H14 M2,11 H14 M5,3 V7 M11,9 V13"/>
         </StackPanel>
 
         <!-- Rodapé do menu -->
         <StackPanel Grid.Row="3" Margin="0,0,0,12">
           <Border Style="{StaticResource Divider}" Margin="16,0,16,8"/>
-          <RadioButton x:Name="TabGeneral" Content="Geral" GroupName="tabs" Style="{StaticResource NavItem}" Checked="Tab_Checked"
-                       ui:Nav.Icon="M2,5 H14 M2,11 H14 M5,3 V7 M11,9 V13"/>
+          <RadioButton x:Name="TabLog" Content="Histórico" GroupName="tabs" Style="{StaticResource NavItem}" Checked="Tab_Checked"
+                       ui:Nav.Icon="M8,2 A6,6 0 1 1 7.99,2 M8,5 V8 L10,9.5"/>
+          <RadioButton x:Name="TabSystem" Content="Meu sistema" GroupName="tabs" Style="{StaticResource NavItem}" Checked="Tab_Checked"
+                       ui:Nav.Icon="M2.5,3.5 H13.5 V10.5 H2.5 Z M6,13.5 H10 M8,10.5 V13.5"/>
         </StackPanel>
       </Grid>
     </Border>
@@ -120,6 +118,15 @@
                    FontFamily="{StaticResource Font.Display}" FontSize="24" FontWeight="Bold"
                    Foreground="{DynamicResource Brush.TextPrimary}"/>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,12,0">
+          <Button x:Name="HelpBtn" Style="{StaticResource BtnIcon}" ToolTip="Ajuda" Click="Help_Click" Margin="0,0,4,0">
+            <Path Width="16" Height="16" Data="M8,1.8 A6.2,6.2 0 1 1 7.99,1.8 M6,6.3 A2,2 0 1 1 8.7,8.1 C8.1,8.5 8,8.8 8,9.5 M8,11.6 H8.01"
+                  Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.5"
+                  StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+          </Button>
+          <Button x:Name="ShotBtn" Style="{StaticResource BtnIcon}" ToolTip="Tirar print da janela (F12)" Click="Shot_Click" Margin="0,0,4,0">
+            <Path Width="16" Height="16" Data="M2,5.5 V3 H5 M11,3 H14 V5.5 M14,10.5 V13 H11 M5,13 H2 V10.5 M6,6.5 H10 V9.5 H6 Z" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
+                  StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+          </Button>
           <Button Style="{StaticResource BtnIcon}" ToolTip="Minimizar" Click="Minimize_Click" Margin="0,0,4,0">
             <Path Width="16" Height="16" Data="M3.5,8 L12.5,8" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}"
                   StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
@@ -138,29 +145,17 @@
         <ScrollViewer x:Name="PageGames" VerticalScrollBarVisibility="Auto">
           <StackPanel Margin="28,8,28,24">
 
-            <Border Style="{StaticResource Card}">
+            <!-- Cabeçalho do jogo (fora de cartão): mostra de qual jogo são os ajustes abaixo -->
+            <Grid Margin="2,0,2,0">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1.2*"/>
+                <ColumnDefinition Width="12"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+              </Grid.ColumnDefinitions>
               <StackPanel>
-                <Grid Height="30">
-                  <TextBlock Text="JOGO" Style="{StaticResource Label}" VerticalAlignment="Center"/>
-                  <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <CheckBox x:Name="DetectSwitch" Style="{StaticResource SwitchToggle}" Content="Detectar este jogo" Click="Detect_Click" Margin="0,0,12,0"
-                              ToolTip="Desligue para o app ignorar só este jogo. A pausa de todos os jogos fica na bandeja."/>
-                    <Button x:Name="DeleteBtn" Style="{StaticResource BtnIcon}" Width="30" Height="30" Click="Delete_Click" ToolTip="Excluir este jogo">
-                      <Path Data="M3,4.5 H13 M6.2,4.5 V3 H9.8 V4.5 M4.5,4.5 L5.2,13 H10.8 L11.5,4.5 M6.8,7 V10.5 M9.2,7 V10.5"
-                            Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.5"
-                            StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Width="16" Height="16" Stretch="None"/>
-                    </Button>
-                  </StackPanel>
-                </Grid>
-                <Grid Margin="0,8,0,0">
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="12"/>
-                    <ColumnDefinition Width="*"/>
-                  </Grid.ColumnDefinitions>
-                  <StackPanel>
-                    <TextBlock Text="Jogo" Style="{StaticResource FieldLabel}"/>
-                    <ComboBox x:Name="GameCombo" SelectionChanged="GameCombo_Changed">
+                <TextBlock Text="Jogo" Style="{StaticResource FieldLabel}"/>
+                <ComboBox x:Name="GameCombo" SelectionChanged="GameCombo_Changed">
                       <ComboBox.ItemTemplate>
                         <DataTemplate>
                           <StackPanel Orientation="Horizontal">
@@ -185,93 +180,103 @@
                         </DataTemplate>
                       </ComboBox.ItemTemplate>
                     </ComboBox>
-                  </StackPanel>
-                  <StackPanel Grid.Column="2">
-                    <TextBlock Text="Processo (executável do jogo)" Style="{StaticResource FieldLabel}"/>
+              </StackPanel>
+              <StackPanel Grid.Column="2">
+                <TextBlock Text="Executável" Style="{StaticResource FieldLabel}"/>
+                <Grid>
+                  <TextBox x:Name="ProcBox" TextChanged="Proc_Changed" IsReadOnly="True" Cursor="Hand" PreviewMouseLeftButtonUp="ProcBox_Click"
+                           Padding="12,0,40,0" ToolTip="Clique para escolher o executável do jogo (.exe)"/>
+                  <Path Data="M7,2.5 A4.5,4.5 0 1 1 6.99,2.5 M10.4,10.4 L14,14" Width="16" Height="16" Stretch="None" HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Margin="0,0,14,0" IsHitTestVisible="False" Stroke="{DynamicResource Brush.TextSecondary}" StrokeThickness="1.7"
+                        StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                </Grid>
+              </StackPanel>
+              <StackPanel Grid.Column="3" Orientation="Horizontal" VerticalAlignment="Bottom" Margin="16,0,0,0" Height="38">
+                <CheckBox x:Name="DetectSwitch" Style="{StaticResource SwitchToggle}" Content="Detectar este jogo" Click="Detect_Click" Margin="0,0,10,0" VerticalAlignment="Center"
+                          ToolTip="Desligue para o app ignorar só este jogo. A pausa de todos os jogos fica na bandeja."/>
+                <Button x:Name="DeleteBtn" Style="{StaticResource BtnIcon}" Width="30" Height="30" Click="Delete_Click" ToolTip="Excluir este jogo" VerticalAlignment="Center">
+                  <Path Data="M3,4.5 H13 M6.2,4.5 V3 H9.8 V4.5 M4.5,4.5 L5.2,13 H10.8 L11.5,4.5 M6.8,7 V10.5 M9.2,7 V10.5"
+                        Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.5"
+                        StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round" Width="16" Height="16" Stretch="None"/>
+                </Button>
+              </StackPanel>
+            </Grid>
+            <TextBlock x:Name="ProcHint" Style="{StaticResource Hint}" Margin="2,8,0,0" TextWrapping="Wrap"
+                       Text="Clique no campo para escolher o .exe do jogo."/>
+            <Border x:Name="PausedNote" Margin="0,12,0,0" Padding="12,10" CornerRadius="10" BorderThickness="1" Visibility="Collapsed"
+                    Background="{DynamicResource Brush.WarnBg}" BorderBrush="{DynamicResource Brush.WarnBorder}">
+              <Grid>
+                <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                <Path Data="M8,2.2 L14.6,13.5 H1.4 Z M8,6.5 V9.7 M8,11.7 H8.01" Width="16" Height="16" Stretch="None" VerticalAlignment="Top" Margin="0,1,10,0"
+                      Stroke="{DynamicResource Brush.Warn}" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                <TextBlock Grid.Column="1" TextWrapping="Wrap" FontSize="12" Foreground="{DynamicResource Brush.TextPrimary}"
+                           Text="A detecção deste jogo está desligada: o app não vai mudar a tela quando ele abrir. Ligue “Detectar este jogo” para voltar a usar."/>
+              </Grid>
+            </Border>
+
+            <TextBlock Style="{StaticResource Label}" Margin="2,20,0,10">
+              <Run x:Name="GamePrefixRun" Text="AJUSTES PARA"/> <Run x:Name="GameNameRun" Text="" Foreground="{DynamicResource Brush.TextAccent}"/>
+            </TextBlock>
+
+            <!-- Barra de ligação: os dois cartões abaixo valem para o jogo escolhido acima -->
+            <Border BorderThickness="2,0,0,0" BorderBrush="{DynamicResource Brush.Accent}" Margin="6,0,0,0" Padding="16,0,0,0">
+              <StackPanel>
+                <Border x:Name="ScreenCard" Style="{StaticResource Card}">
+                  <StackPanel>
                     <Grid>
-                      <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="6"/>
-                        <ColumnDefinition Width="38"/>
-                      </Grid.ColumnDefinitions>
-                      <TextBox x:Name="ProcBox" TextChanged="Proc_Changed" IsReadOnly="True" Cursor="Hand" PreviewMouseLeftButtonUp="ProcBox_Click"/>
-                      <Button Grid.Column="2" Style="{StaticResource Btn}" Height="38" Padding="0" ToolTip="Procurar o executável do jogo (.exe)"
-                              Click="Browse_Click">
-                        <Path Data="M7,2.5 A4.5,4.5 0 1 1 6.99,2.5 M10.4,10.4 L14,14" Stroke="{DynamicResource Brush.TextPrimary}"
-                              StrokeThickness="1.7" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                      <TextBlock Text="TELA NO JOGO" Style="{StaticResource Label}" VerticalAlignment="Center"/>
+                      <Button x:Name="TestBtn" Style="{StaticResource BtnSm}" Click="Test_Click" HorizontalAlignment="Right"
+                              ToolTip="Mostra esta tela por alguns segundos e depois volta ao normal sozinho">
+                        <StackPanel Orientation="Horizontal">
+                          <Path Data="M4.5,3 L12.5,8 L4.5,13 Z" Width="16" Height="16" Stretch="None" VerticalAlignment="Center" Margin="0,0,7,0"
+                                Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6"
+                                StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                          <TextBlock x:Name="TestText" Text="Testar resolução" VerticalAlignment="Center"/>
+                        </StackPanel>
                       </Button>
                     </Grid>
-                    <TextBlock x:Name="ProcHint" Style="{StaticResource Hint}" Margin="0,8,0,0" TextWrapping="Wrap"
-                               Text="Use a lupa para escolher o .exe do jogo."/>
+                    <Grid Margin="0,8,0,0">
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="12"/>
+                        <ColumnDefinition Width="*"/>
+                      </Grid.ColumnDefinitions>
+                      <StackPanel>
+                        <TextBlock Text="Resolução" Style="{StaticResource FieldLabel}"/>
+                        <ComboBox x:Name="ResCombo" FontFamily="{StaticResource Font.Mono}" SelectionChanged="Res_Changed"/>
+                      </StackPanel>
+                      <StackPanel Grid.Column="2">
+                        <TextBlock Text="Taxa de atualização" Style="{StaticResource FieldLabel}"/>
+                        <ComboBox x:Name="HzCombo" DisplayMemberPath="Label" FontFamily="{StaticResource Font.Mono}" SelectionChanged="Hz_Changed"/>
+                      </StackPanel>
+                    </Grid>
+                    <TextBlock x:Name="ScreenHint" Style="{StaticResource Hint}" Margin="0,8,0,0"
+                               Text="Em “Manter atual” o Hz não muda. Vale no monitor em que o jogo abrir."/>
                   </StackPanel>
-                </Grid>
-                <Border x:Name="PausedNote" Margin="0,12,0,0" Padding="12,10" CornerRadius="10" BorderThickness="1" Visibility="Collapsed"
-                        Background="{DynamicResource Brush.WarnBg}" BorderBrush="{DynamicResource Brush.WarnBorder}">
-                  <Grid>
-                    <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
-                    <Path Data="M8,2.2 L14.6,13.5 H1.4 Z M8,6.5 V9.7 M8,11.7 H8.01" Width="16" Height="16" Stretch="None" VerticalAlignment="Top" Margin="0,1,10,0"
-                          Stroke="{DynamicResource Brush.Warn}" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
-                    <TextBlock Grid.Column="1" TextWrapping="Wrap" FontSize="12" Foreground="{DynamicResource Brush.TextPrimary}"
-                               Text="A detecção deste jogo está desligada: o app não vai mudar a tela quando ele abrir. Ligue “Detectar este jogo” para voltar a usar."/>
-                  </Grid>
                 </Border>
-              </StackPanel>
-            </Border>
 
-            <Border x:Name="ScreenCard" Style="{StaticResource Card}" Margin="0,12,0,0">
-              <StackPanel>
-                <Grid>
-                  <TextBlock Text="TELA NO JOGO" Style="{StaticResource Label}" VerticalAlignment="Center"/>
-                  <Button x:Name="TestBtn" Style="{StaticResource BtnSm}" Click="Test_Click" HorizontalAlignment="Right"
-                          ToolTip="Mostra esta tela por alguns segundos e depois volta ao normal sozinho">
-                    <StackPanel Orientation="Horizontal">
-                      <Path Data="M4.5,3 L12.5,8 L4.5,13 Z" Width="16" Height="16" Stretch="None" VerticalAlignment="Center" Margin="0,0,7,0"
-                            Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.6"
-                            StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
-                      <TextBlock x:Name="TestText" Text="Testar resolução" VerticalAlignment="Center"/>
-                    </StackPanel>
-                  </Button>
-                </Grid>
-                <Grid Margin="0,8,0,0">
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="12"/>
-                    <ColumnDefinition Width="*"/>
-                  </Grid.ColumnDefinitions>
+                <Border x:Name="SatCard" Style="{StaticResource Card}" Margin="0,12,0,0">
                   <StackPanel>
-                    <TextBlock Text="Resolução" Style="{StaticResource FieldLabel}"/>
-                    <ComboBox x:Name="ResCombo" FontFamily="{StaticResource Font.Mono}" SelectionChanged="Res_Changed"/>
+                    <TextBlock Text="SATURAÇÃO NO JOGO" Style="{StaticResource Label}" Height="30"/>
+                    <Grid Margin="0,2,0,6">
+                      <CheckBox x:Name="SatEnable" Content="Mudar a saturação durante este jogo" Click="SatEnable_Click" HorizontalAlignment="Left"/>
+                      <TextBlock Style="{StaticResource Hint}" FontSize="11" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                 Text="O app só muda a saturação durante o jogo aberto."/>
+                    </Grid>
+                    <Canvas x:Name="SatBubbleHost" Height="22" SizeChanged="SatBubbleHost_SizeChanged">
+                      <TextBlock x:Name="SatValue" Style="{StaticResource Mono}" FontSize="15" Foreground="{DynamicResource Brush.TextAccent}" Text="50%"
+                                 Canvas.Top="0"/>
+                    </Canvas>
+                    <Slider x:Name="SatSlider" ValueChanged="Sat_Changed"/>
+                    <Grid Margin="0,4,0,0">
+                      <TextBlock Text="0%" Style="{StaticResource Hint}" HorizontalAlignment="Left"/>
+                      <TextBlock Text="100%" Style="{StaticResource Hint}" HorizontalAlignment="Right"/>
+                    </Grid>
+                    <TextBlock x:Name="SatOutside" Style="{StaticResource Hint}" Margin="0,6,0,0" Visibility="Collapsed"/>
+                    <TextBlock x:Name="SatUnavailable" Style="{StaticResource Hint}" Margin="0,6,0,0" Visibility="Collapsed"
+                               Foreground="{DynamicResource Brush.Warn}"/>
                   </StackPanel>
-                  <StackPanel Grid.Column="2">
-                    <TextBlock Text="Taxa de atualização" Style="{StaticResource FieldLabel}"/>
-                    <ComboBox x:Name="HzCombo" DisplayMemberPath="Label" FontFamily="{StaticResource Font.Mono}" SelectionChanged="Hz_Changed"/>
-                  </StackPanel>
-                </Grid>
-                <TextBlock x:Name="ScreenHint" Style="{StaticResource Hint}" Margin="0,8,0,0"
-                           Text="Em “Manter atual” o Hz não muda. Vale no monitor em que o jogo abrir."/>
-              </StackPanel>
-            </Border>
-
-            <Border x:Name="SatCard" Style="{StaticResource Card}" Margin="0,12,0,0">
-              <StackPanel>
-                <TextBlock Text="SATURAÇÃO NO JOGO" Style="{StaticResource Label}" Height="30"/>
-                <Grid Margin="0,2,0,6">
-                  <CheckBox x:Name="SatEnable" Content="Mudar a saturação durante este jogo" Click="SatEnable_Click" HorizontalAlignment="Left"/>
-                  <TextBlock Style="{StaticResource Hint}" FontSize="11" HorizontalAlignment="Right" VerticalAlignment="Center"
-                             Text="O app só muda a saturação durante o jogo aberto."/>
-                </Grid>
-                <Canvas x:Name="SatBubbleHost" Height="22" SizeChanged="SatBubbleHost_SizeChanged">
-                  <TextBlock x:Name="SatValue" Style="{StaticResource Mono}" FontSize="15" Foreground="{DynamicResource Brush.TextAccent}" Text="50%"
-                             Canvas.Top="0"/>
-                </Canvas>
-                <Slider x:Name="SatSlider" ValueChanged="Sat_Changed"/>
-                <Grid Margin="0,4,0,0">
-                  <TextBlock Text="0%" Style="{StaticResource Hint}" HorizontalAlignment="Left"/>
-                  <TextBlock Text="100%" Style="{StaticResource Hint}" HorizontalAlignment="Right"/>
-                </Grid>
-                <TextBlock x:Name="SatOutside" Style="{StaticResource Hint}" Margin="0,6,0,0" Visibility="Collapsed"/>
-                <TextBlock x:Name="SatUnavailable" Style="{StaticResource Hint}" Margin="0,6,0,0" Visibility="Collapsed"
-                           Foreground="{DynamicResource Brush.Warn}"/>
+                </Border>
               </StackPanel>
             </Border>
 
@@ -279,89 +284,106 @@
         </ScrollViewer>
 
       <!-- ===== GERAL (uma coluna) ===== -->
-      <Grid x:Name="PageGeneral" Visibility="Collapsed" Margin="28,12,28,20">
-          <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="*"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
-          <StackPanel Grid.Row="2" Margin="4,12,4,0">
-            <Border Height="1" Background="{DynamicResource Brush.BorderSubtle}" Margin="0,0,0,12"/>
-            <TextBlock Text="COMO O APP FUNCIONA" Style="{StaticResource Label}" Foreground="{DynamicResource Brush.TextAccent}"/>
-            <TextBlock Style="{StaticResource Hint}" Margin="0,6,0,0" Foreground="{DynamicResource Brush.TextSecondary}"
-                       Text="Só confere quais programas estão abertos e troca resolução e saturação do monitor. Não lê nem altera o jogo e não injeta código."/>
-            <Button Style="{StaticResource BtnLink}" Click="HowTo_Click" HorizontalAlignment="Left" Margin="0,8,0,0">
-              <TextBlock Text="Como ativar a escala “Tela inteira” (GPU)" FontSize="12" TextDecorations="Underline"/>
-            </Button>
-          </StackPanel>
-          <StackPanel Grid.Row="0">
+      <ScrollViewer x:Name="PageGeneral" Visibility="Collapsed" VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="28,12,28,20">
           <Border Style="{StaticResource Card}">
             <StackPanel>
-              <Grid Margin="0,0,0,6">
-                <TextBlock Text="SISTEMA" Style="{StaticResource Label}" VerticalAlignment="Center"/>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                  <TextBlock Text="Idioma" Style="{StaticResource Hint}" VerticalAlignment="Center" Margin="0,0,8,0"/>
-                  <ComboBox x:Name="LangCombo" Width="130" Height="32" SelectionChanged="Lang_Changed">
-                    <ComboBoxItem Content="Português"/>
-                    <ComboBoxItem Content="English"/>
-                  </ComboBox>
-                </StackPanel>
-              </Grid>
-              <CheckBox x:Name="StartCheck" Content="Iniciar com o Windows (direto na bandeja)" Click="General_Click"/>
-              <CheckBox x:Name="TrayCheck" Content="Fechar a janela mantém o app na bandeja" Click="General_Click"/>
-              <CheckBox x:Name="NotifyCheck" Content="Avisar quando a resolução mudar ou voltar" Click="General_Click"/>
-              <CheckBox x:Name="SplashCheck" Content="Mostrar animação ao abrir o app" Click="General_Click"/>
+              <TextBlock Text="APLICATIVO" Style="{StaticResource Label}"/>
+              <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.BorderSubtle}" Padding="0,12">
+                <Grid>
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                  <StackPanel VerticalAlignment="Center" Margin="0,0,16,0">
+                    <TextBlock Text="Iniciar com o Windows" Foreground="{DynamicResource Brush.TextPrimary}"/>
+                    <TextBlock Text="Abre direto na bandeja." Style="{StaticResource Hint}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                  </StackPanel>
+                  <CheckBox x:Name="StartCheck" Grid.Column="1" Style="{StaticResource SwitchToggle}" VerticalAlignment="Center" Click="General_Click"/>
+                </Grid>
+              </Border>
+              <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.BorderSubtle}" Padding="0,12">
+                <Grid>
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                  <StackPanel VerticalAlignment="Center" Margin="0,0,16,0">
+                    <TextBlock Text="Fechar a janela mantém o app na bandeja" Foreground="{DynamicResource Brush.TextPrimary}"/>
+                    <TextBlock Text="O app continua detectando jogos." Style="{StaticResource Hint}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                  </StackPanel>
+                  <CheckBox x:Name="TrayCheck" Grid.Column="1" Style="{StaticResource SwitchToggle}" VerticalAlignment="Center" Click="General_Click"/>
+                </Grid>
+              </Border>
+              <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.BorderSubtle}" Padding="0,12">
+                <Grid>
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                  <StackPanel VerticalAlignment="Center" Margin="0,0,16,0">
+                    <TextBlock Text="Avisar quando a resolução mudar ou voltar" Foreground="{DynamicResource Brush.TextPrimary}"/>
+                    <TextBlock Text="Mostra um aviso no canto da tela." Style="{StaticResource Hint}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                  </StackPanel>
+                  <CheckBox x:Name="NotifyCheck" Grid.Column="1" Style="{StaticResource SwitchToggle}" VerticalAlignment="Center" Click="General_Click"/>
+                </Grid>
+              </Border>
+              <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.BorderSubtle}" Padding="0,12">
+                <Grid>
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                  <StackPanel VerticalAlignment="Center" Margin="0,0,16,0">
+                    <TextBlock Text="Mostrar animação ao abrir o app" Foreground="{DynamicResource Brush.TextPrimary}"/>
+                    <TextBlock Text="A marca gira antes de abrir a janela." Style="{StaticResource Hint}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                  </StackPanel>
+                  <CheckBox x:Name="SplashCheck" Grid.Column="1" Style="{StaticResource SwitchToggle}" VerticalAlignment="Center" Click="General_Click"/>
+                </Grid>
+              </Border>
+              <Border BorderThickness="0,0,0,0" BorderBrush="{DynamicResource Brush.BorderSubtle}" Padding="0,12">
+                <Grid>
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                  <StackPanel VerticalAlignment="Center" Margin="0,0,16,0">
+                    <TextBlock Text="Idioma" Foreground="{DynamicResource Brush.TextPrimary}"/>
+                    <TextBlock Text="Português ou English." Style="{StaticResource Hint}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                  </StackPanel>
+                  <ComboBox x:Name="LangCombo" Grid.Column="1" Width="150" Height="34" VerticalAlignment="Center" SelectionChanged="Lang_Changed"><ComboBoxItem Content="Português"/><ComboBoxItem Content="English"/></ComboBox>
+                </Grid>
+              </Border>
             </StackPanel>
           </Border>
 
           <Border Style="{StaticResource Card}" Margin="0,12,0,0">
-            <Grid>
-              <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-              </Grid.ColumnDefinitions>
-              <StackPanel VerticalAlignment="Center">
-                <TextBlock Text="ATALHO PARA RESTAURAR" Style="{StaticResource Label}"/>
-                <TextBlock x:Name="HotkeyHint" Style="{StaticResource Hint}" Margin="0,4,0,0"
-                           Text="Combine Ctrl, Alt, Shift ou Win com outra tecla."/>
-              </StackPanel>
-              <StackPanel Grid.Column="1" Orientation="Horizontal">
-                <Border CornerRadius="10" BorderThickness="1" Height="38" Width="200" Background="{DynamicResource Brush.Field}"
-                        BorderBrush="{DynamicResource Brush.FieldBorder}">
-                  <TextBlock x:Name="HotkeyText" VerticalAlignment="Center" Margin="14,0" FontFamily="{StaticResource Font.Mono}" FontSize="13"
-                             Foreground="{DynamicResource Brush.TextPrimary}"/>
-                </Border>
-                <Button x:Name="HotkeyBtn" Content="Alterar" Style="{StaticResource Btn}" Height="38" Margin="8,0,0,0" MinWidth="86"
-                        Click="HotkeyBtn_Click" PreviewKeyDown="HotkeyBtn_PreviewKeyDown" LostKeyboardFocus="HotkeyBtn_LostFocus"
-                        ToolTip="Clique, depois pressione a nova combinação de teclas"/>
-              </StackPanel>
-            </Grid>
+            <StackPanel>
+              <TextBlock Text="DETECÇÃO" Style="{StaticResource Label}"/>
+              <Border BorderThickness="0,0,0,0" BorderBrush="{DynamicResource Brush.BorderSubtle}" Padding="0,12">
+                <Grid>
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                  <StackPanel VerticalAlignment="Center" Margin="0,0,16,0">
+                    <TextBlock Text="Esperar antes de aplicar" Foreground="{DynamicResource Brush.TextPrimary}"/>
+                    <TextBlock Text="Tempo depois que o jogo abre. Jogos com anti-cheat costumam pedir mais." Style="{StaticResource Hint}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                  </StackPanel>
+                  <ComboBox x:Name="WaitCombo" Grid.Column="1" Width="150" Height="34" VerticalAlignment="Center" FontFamily="{StaticResource Font.Mono}" SelectionChanged="Wait_Changed"/>
+                </Grid>
+              </Border>
+            </StackPanel>
           </Border>
 
-          <Grid Margin="0,12,0,0">
-            <Grid.ColumnDefinitions>
-              <ColumnDefinition Width="*"/>
-              <ColumnDefinition Width="12"/>
-              <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <Border Style="{StaticResource Card}">
-              <StackPanel>
-                <TextBlock Text="ESPERAR ANTES DE APLICAR" Style="{StaticResource Label}"/>
-                <TextBlock Style="{StaticResource Hint}" Margin="0,4,0,8" TextWrapping="Wrap"
-                           Text="Tempo depois que o jogo abre. Jogos com anti-cheat costumam pedir mais."/>
-                <ComboBox x:Name="WaitCombo" FontFamily="{StaticResource Font.Mono}" SelectionChanged="Wait_Changed"/>
-              </StackPanel>
-            </Border>
-            <Border Grid.Column="2" Style="{StaticResource Card}">
-              <StackPanel>
-                <TextBlock Text="BACKUP" Style="{StaticResource Label}"/>
-                <TextBlock Style="{StaticResource Hint}" Margin="0,4,0,8" TextWrapping="Wrap"
-                           Text="Salve suas configurações num arquivo ou traga de outro PC."/>
-                <StackPanel Orientation="Horizontal">
-                  <Button Content="Exportar" Style="{StaticResource Btn}" Height="38" MinWidth="96" Click="Export_Click"/>
-                  <Button Content="Importar" Style="{StaticResource Btn}" Height="38" MinWidth="96" Margin="8,0,0,0" Click="Import_Click"/>
-                </StackPanel>
-              </StackPanel>
-            </Border>
-          </Grid>
-          </StackPanel>
-        </Grid>
+          <Border Style="{StaticResource Card}" Margin="0,12,0,0">
+            <StackPanel>
+              <TextBlock Text="BACKUP" Style="{StaticResource Label}"/>
+              <Border BorderThickness="0,0,0,0" BorderBrush="{DynamicResource Brush.BorderSubtle}" Padding="0,12">
+                <Grid>
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                  <StackPanel VerticalAlignment="Center" Margin="0,0,16,0">
+                    <TextBlock Text="Configurações em arquivo" Foreground="{DynamicResource Brush.TextPrimary}"/>
+                    <TextBlock Text="Salve num arquivo ou traga de outro PC." Style="{StaticResource Hint}" Margin="0,2,0,0" TextWrapping="Wrap"/>
+                  </StackPanel>
+                  <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                    <Button Style="{StaticResource Btn}" Height="38" MinWidth="96" Click="Export_Click"><StackPanel Orientation="Horizontal"><Path Data="M8,10 V2.5 M5,5 L8,2.5 L11,5 M3,9 V13 H13 V9" Width="16" Height="16" Stretch="None" VerticalAlignment="Center" Margin="0,0,8,0" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/><TextBlock Text="Exportar" VerticalAlignment="Center"/></StackPanel></Button>
+                    <Button Style="{StaticResource Btn}" Height="38" MinWidth="96" Margin="8,0,0,0" Click="Import_Click"><StackPanel Orientation="Horizontal"><Path Data="M8,2.5 V10 M5,7.5 L8,10 L11,7.5 M3,9 V13 H13 V9" Width="16" Height="16" Stretch="None" VerticalAlignment="Center" Margin="0,0,8,0" Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.5" StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/><TextBlock Text="Importar" VerticalAlignment="Center"/></StackPanel></Button>
+                  </StackPanel>
+                </Grid>
+              </Border>
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </ScrollViewer>
+
+      <!-- ===== DESEMPENHO / LIMPEZA / MEU SISTEMA (montados no código) ===== -->
+      <ContentControl x:Name="PagePerf" Visibility="Collapsed"/>
+      <ContentControl x:Name="PageClean" Visibility="Collapsed"/>
+      <ContentControl x:Name="PageSystem" Visibility="Collapsed"/>
+      <ContentControl x:Name="PageHelp" Visibility="Collapsed"/>
 
       <!-- ===== LOG ===== -->
       <Grid x:Name="PageLog" Margin="28,8,28,24" Visibility="Collapsed">
@@ -370,37 +392,52 @@
           <RowDefinition Height="*"/>
           <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <Grid Height="30">
-          <TextBlock Text="ÚLTIMOS EVENTOS" Style="{StaticResource Label}" VerticalAlignment="Center"/>
+        <Grid Height="36">
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+            <Button x:Name="LogFAll" Content="Todos" Style="{StaticResource BtnSmAccent}" Click="LogFilter_Click" Tag="all" Margin="0,0,6,0"/>
+            <Button x:Name="LogFGame" Content="Jogos" Style="{StaticResource BtnSm}" Click="LogFilter_Click" Tag="game" Margin="0,0,6,0"/>
+            <Button x:Name="LogFBoost" Content="Boost" Style="{StaticResource BtnSm}" Click="LogFilter_Click" Tag="boost"/>
+          </StackPanel>
           <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Style="{StaticResource BtnIcon}" ToolTip="Copiar" Click="CopyLog_Click" Margin="0,0,4,0">
-              <Path Width="16" Height="16" Data="M7.5,5.5 H11.7 A1.8,1.8 0 0 1 13.5,7.3 V11.7 A1.8,1.8 0 0 1 11.7,13.5 H7.3 A1.8,1.8 0 0 1 5.5,11.7 V7.5 A2,2 0 0 1 7.5,5.5 Z M10.5,3.5 V3.3 A1.8,1.8 0 0 0 8.7,1.5 H4.3 A1.8,1.8 0 0 0 2.5,3.3 V7.7 A1.8,1.8 0 0 0 4.3,9.5 H4.5"
-                    Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.5"
-                    StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+            <Button Style="{StaticResource BtnSm}" Click="CopyLog_Click" Margin="0,0,8,0">
+              <StackPanel Orientation="Horizontal">
+                <Path Width="16" Height="16" Stretch="None" VerticalAlignment="Center" Margin="0,0,7,0" Data="M7.5,5.5 H11.7 A1.8,1.8 0 0 1 13.5,7.3 V11.7 A1.8,1.8 0 0 1 11.7,13.5 H7.3 A1.8,1.8 0 0 1 5.5,11.7 V7.5 A2,2 0 0 1 7.5,5.5 Z M10.5,3.5 V3.3 A1.8,1.8 0 0 0 8.7,1.5 H4.3 A1.8,1.8 0 0 0 2.5,3.3 V7.7 A1.8,1.8 0 0 0 4.3,9.5 H4.5"
+                      Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.5"
+                      StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                <TextBlock Text="Copiar" VerticalAlignment="Center"/>
+              </StackPanel>
             </Button>
-            <Button Style="{StaticResource BtnIcon}" ToolTip="Limpar" Click="ClearLog_Click">
-              <Path Width="16" Height="16" Data="M2.5,4.2 H13.5 M6,4.2 V2.8 H10 V4.2 M4,4.2 L4.6,12.6 A1.2,1.2 0 0 0 5.8,13.7 H10.2 A1.2,1.2 0 0 0 11.4,12.6 L12,4.2 M6.6,7 V11 M9.4,7 V11"
-                    Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.5"
-                    StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+            <Button Style="{StaticResource BtnSm}" Click="ClearLog_Click">
+              <StackPanel Orientation="Horizontal">
+                <Path Width="16" Height="16" Stretch="None" VerticalAlignment="Center" Margin="0,0,7,0" Data="M2.5,4.2 H13.5 M6,4.2 V2.8 H10 V4.2 M4,4.2 L4.6,12.6 A1.2,1.2 0 0 0 5.8,13.7 H10.2 A1.2,1.2 0 0 0 11.4,12.6 L12,4.2 M6.6,7 V11 M9.4,7 V11"
+                      Stroke="{Binding Foreground, RelativeSource={RelativeSource AncestorType=Button}}" StrokeThickness="1.5"
+                      StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"/>
+                <TextBlock Text="Limpar" VerticalAlignment="Center"/>
+              </StackPanel>
             </Button>
           </StackPanel>
         </Grid>
         <Border Grid.Row="1" Margin="0,8,0,0" CornerRadius="10" BorderThickness="1"
                 Background="{DynamicResource Brush.Panel}" BorderBrush="{DynamicResource Brush.BorderSubtle}">
+          <Grid>
           <ScrollViewer VerticalScrollBarVisibility="Auto">
             <ItemsControl x:Name="LogList">
               <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                  <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.BorderSubtle}" Margin="12,0">
-                  <Grid Margin="0,10">
+                  <Border BorderThickness="0,0,0,1" BorderBrush="{DynamicResource Brush.BorderSubtle}" Margin="16,0">
+                  <Grid Margin="0,12">
                     <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="62"/>
-                      <ColumnDefinition Width="18"/>
-                      <ColumnDefinition Width="*"/>
+                      <ColumnDefinition Width="74"/>
+                      <ColumnDefinition Width="22"/>
+                      <ColumnDefinition Width="2*"/>
+                      <ColumnDefinition Width="3*"/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="{Binding TimeText}" Style="{StaticResource Mono}" FontSize="11"
-                               Foreground="{DynamicResource Brush.TextTertiary}" Margin="0,2,0,0"/>
-                    <Ellipse Grid.Column="1" Width="8" Height="8" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,6,0,0">
+                    <StackPanel>
+                      <TextBlock Text="{Binding TimeText}" Style="{StaticResource Mono}" FontSize="12"
+                                 Foreground="{DynamicResource Brush.TextPrimary}"/>
+                      <TextBlock Text="{Binding DateText}" FontSize="10" Foreground="{DynamicResource Brush.TextTertiary}" Margin="0,2,0,0"/>
+                    </StackPanel>
+                    <Ellipse Grid.Column="1" Width="8" Height="8" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,5,0,0">
                       <Ellipse.Style>
                         <Style TargetType="Ellipse">
                           <Setter Property="Fill" Value="{DynamicResource Brush.StateIdle}"/>
@@ -412,23 +449,33 @@
                         </Style>
                       </Ellipse.Style>
                     </Ellipse>
-                    <StackPanel Grid.Column="2">
-                      <TextBlock Text="{Binding Text}" TextWrapping="Wrap" FontSize="12" Foreground="{DynamicResource Brush.TextPrimary}"/>
-                      <TextBlock Text="{Binding Detail}" TextWrapping="Wrap" FontSize="11" Foreground="{DynamicResource Brush.TextTertiary}"
-                                 Margin="0,2,0,0"/>
-                    </StackPanel>
+                    <TextBlock Grid.Column="2" Text="{Binding Text}" TextWrapping="Wrap" FontSize="13" Margin="0,0,16,0"
+                               Foreground="{DynamicResource Brush.TextPrimary}"/>
+                    <TextBlock Grid.Column="3" Text="{Binding Detail}" TextWrapping="Wrap" FontSize="12"
+                               Foreground="{DynamicResource Brush.TextTertiary}"/>
                   </Grid>
                   </Border>
                 </DataTemplate>
               </ItemsControl.ItemTemplate>
             </ItemsControl>
           </ScrollViewer>
+          <TextBlock x:Name="LogEmpty" Text="Nenhum evento por aqui ainda." Visibility="Collapsed" FontSize="12"
+                     HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource Brush.TextTertiary}"/>
+          </Grid>
         </Border>
         <Button Grid.Row="2" Content="Ver histórico completo (últimos 500 eventos)" Style="{StaticResource BtnGhost}"
                 HorizontalAlignment="Left" Margin="0,8,0,0" Click="FullLog_Click"/>
       </Grid>
       </Grid>
     </Grid>
+    <!-- Tour guiado (montado em código: Tour.cs) -->
+    <Grid x:Name="TourLayer" Grid.ColumnSpan="2" Panel.ZIndex="100" Visibility="Collapsed"/>
+    <!-- Aviso rápido de "print salvo" -->
+    <Border x:Name="ShotToast" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,24,22" Padding="14,10" CornerRadius="10"
+            BorderThickness="1" Visibility="Collapsed" IsHitTestVisible="False" Panel.ZIndex="90"
+            Background="{DynamicResource Brush.Titlebar}" BorderBrush="{DynamicResource Brush.BorderStrong}">
+      <TextBlock x:Name="ShotToastText" FontSize="12" Foreground="{DynamicResource Brush.TextPrimary}"/>
+    </Border>
   </Grid>
   </Border>
 </Window>

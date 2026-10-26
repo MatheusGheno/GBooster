@@ -43,6 +43,12 @@ namespace GBooster.Core
         public bool IsActive => Current != null;
         public bool IsWaitingForDelay => Current == null && _pending != null;
 
+        /// <summary>Jogos que o usuário restaurou à mão com o jogo aberto: ficam ignorados até o programa fechar.</summary>
+        private readonly Dictionary<string, string> _ignored = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>Nome do jogo ignorado até fechar (para mostrar na tela), ou null.</summary>
+        public string? IgnoredGameName => _ignored.Count > 0 ? _ignored.Values.First() : null;
+
         public GameConfig? Game(string id) => Settings.Games.FirstOrDefault(g => g.Id == id);
 
         // ------------------------------------------------------------------
@@ -67,6 +73,19 @@ namespace GBooster.Core
         {
             Dictionary<string, uint> procs = ProcessScanner.Snapshot(WantedNames());
 
+            if (_ignored.Count > 0)
+            {
+                // O jogo fechou: da próxima vez que abrir, volta a ser detectado.
+                foreach (string key in _ignored.Keys.ToList())
+                {
+                    if (!procs.ContainsKey(key))
+                    {
+                        _ignored.Remove(key);
+                        Changed?.Invoke();
+                    }
+                }
+            }
+
             if (Current != null)
             {
                 WatchActive(procs);
@@ -82,6 +101,10 @@ namespace GBooster.Core
             foreach (GameConfig game in Settings.Games)
             {
                 if (!game.Enabled || string.IsNullOrWhiteSpace(game.ProcessName))
+                {
+                    continue;
+                }
+                if (_ignored.ContainsKey(game.ProcessName.Trim()))
                 {
                     continue;
                 }
@@ -155,6 +178,7 @@ namespace GBooster.Core
         /// <summary>Aplica a configuração do jogo. pid = 0 quando é um teste sem o jogo aberto.</summary>
         public string? Apply(GameConfig game, uint pid, bool manual)
         {
+            _ignored.Remove(game.ProcessName?.Trim() ?? "");
             if (Current != null)
             {
                 RestoreNow(false);
@@ -268,6 +292,21 @@ namespace GBooster.Core
         // ------------------------------------------------------------------
         // Restaurar
         // ------------------------------------------------------------------
+        /// <summary>
+        /// "Restaurar resolução agora" feito pelo usuário. Se o jogo ainda está aberto, ele fica ignorado até fechar,
+        /// senão o app o detectaria de novo em poucos segundos e trocaria a tela outra vez.
+        /// </summary>
+        public void RestoreByUser()
+        {
+            AppliedState? st = Current;
+            if (st != null && !st.Manual && !string.IsNullOrEmpty(st.ProcessName))
+            {
+                _ignored[st.ProcessName.Trim()] = st.GameName;
+                AddLog(Loc.T("Troca de tela pausada até o jogo fechar"), st.GameName, false);
+            }
+            RestoreNow(false);
+        }
+
         public void RestoreNow(bool announce)
         {
             AppliedState? st = Current;
@@ -341,9 +380,9 @@ namespace GBooster.Core
         // ------------------------------------------------------------------
         // Log
         // ------------------------------------------------------------------
-        public void AddLog(string text, string detail, bool active)
+        public void AddLog(string text, string detail, bool active, string kind = "game")
         {
-            Log.Insert(0, new LogEntry { Time = DateTime.Now, Text = text, Detail = detail, Active = active });
+            Log.Insert(0, new LogEntry { Time = DateTime.Now, Text = text, Detail = detail, Active = active, Kind = kind });
             if (Log.Count > 500)
             {
                 Log.RemoveRange(500, Log.Count - 500);

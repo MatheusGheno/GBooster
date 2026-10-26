@@ -192,5 +192,37 @@ namespace GBooster.Core
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+    
+        // ---------------------------------------------------------------
+        // Mouse sem aceleração (aplica na hora o que o ajuste gravou no registro) e Lixeira.
+        // ---------------------------------------------------------------
+        private const uint SPI_SETMOUSE = 0x0004;
+        private const uint SPIF_UPDATEINIFILE_SENDCHANGE = 0x0003;
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool SystemParametersInfo(uint uiAction, uint uiParam, int[] pvParam, uint fWinIni);
+
+        public static void SetMouseAcceleration(int threshold1, int threshold2, int acceleration)
+        {
+            SystemParametersInfo(SPI_SETMOUSE, 0, new[] { threshold1, threshold2, acceleration }, SPIF_UPDATEINIFILE_SENDCHANGE);
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public struct SHQUERYRBINFO
+        {
+            public uint cbSize;
+            public long i64Size;
+            public long i64NumItems;
+        }
+
+        [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
+        public static extern int SHQueryRecycleBin(string? pszRootPath, ref SHQUERYRBINFO pSHQueryRBInfo);
+
+        [DllImport("shell32.dll", CharSet = CharSet.Unicode)]
+        public static extern int SHEmptyRecycleBin(IntPtr hwnd, string? pszRootPath, uint dwFlags);
+
+        public const uint SHERB_NOCONFIRMATION = 0x1;
+        public const uint SHERB_NOPROGRESSUI = 0x2;
+        public const uint SHERB_NOSOUND = 0x4;
     }
 }
