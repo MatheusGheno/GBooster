@@ -154,6 +154,31 @@ namespace GBooster.Core.Boost
                     return r;
                 }
             }
+            else
+            {
+                // Backup feito por uma versão anterior do app, que talvez controlasse menos valores do que esta.
+                // Guarda também os valores que faltam, senão o Desfazer os deixaria para trás.
+                TweakBackup old = backups[t.Id];
+                bool added = false;
+                foreach (RegItem it in t.Items)
+                {
+                    bool has = old.Entries.Any(e => e.Machine == it.Machine
+                                                    && string.Equals(e.KeyPath, it.KeyPath, StringComparison.OrdinalIgnoreCase)
+                                                    && string.Equals(e.Name, it.Name, StringComparison.OrdinalIgnoreCase));
+                    if (has) continue;
+                    BackupEntry extra = Capture(it);
+                    // Se o valor já está igual ao do ajuste, foi o próprio app que colocou: antes não existia.
+                    string target = it.Text ?? (it.Dword ?? 0).ToString(CultureInfo.InvariantCulture);
+                    if (extra.Existed && string.Equals(extra.Data, target, StringComparison.Ordinal))
+                    {
+                        extra.Existed = false;
+                        extra.Data = "";
+                    }
+                    old.Entries.Add(extra);
+                    added = true;
+                }
+                if (added) SaveBackups(backups);
+            }
 
             var errors = new List<string>();
             foreach (RegItem it in t.Items)
